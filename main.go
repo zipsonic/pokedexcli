@@ -9,7 +9,7 @@ import (
 type Command struct {
 	name string
 	desc string
-	cmd  func()
+	cmd  func() error
 }
 
 var cliCommand = map[string]Command{
@@ -23,14 +23,34 @@ var cliCommand = map[string]Command{
 		desc: "Exits the Pokedex",
 		cmd:  cmdExit,
 	},
+	"map": {
+		name: "map",
+		desc: "Returns a page of location Data from the PokeAPI in 20 area increments",
+		cmd:  cmdMap,
+	},
+	"mapb": {
+		name: "mapb",
+		desc: "Returns prior page of location Data from the PokeAPI in 20 area increments",
+		cmd:  cmdMapb,
+	},
 }
 
-func cmdHelp() {
-	fmt.Println("Command Help Found")
+func cmdMap() error {
+	return nil
 }
 
-func cmdExit() {
-	fmt.Println("Command Exit found")
+func cmdMapb() error {
+	return nil
+}
+
+func cmdHelp() error {
+	fmt.Println(cliCommand["help"].desc)
+	return nil
+}
+
+func cmdExit() error {
+	os.Exit(0)
+	return nil
 }
 
 func main() {
