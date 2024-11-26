@@ -6,34 +6,10 @@ import (
 	"os"
 )
 
-type Command struct {
-	name string
-	desc string
-	cmd  func() error
-}
-
 var cliCommand = make(map[string]Command)
 
 func registerCommand(name, desc string, cmd func() error) {
 	cliCommand[name] = Command{name: name, desc: desc, cmd: cmd}
-}
-
-func cmdMap() error {
-	return nil
-}
-
-func cmdMapb() error {
-	return nil
-}
-
-func cmdHelp() error {
-	fmt.Println(cliCommand["help"].desc)
-	return nil
-}
-
-func cmdExit() error {
-	os.Exit(0)
-	return nil
 }
 
 func init() {
