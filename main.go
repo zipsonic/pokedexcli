@@ -12,27 +12,10 @@ type Command struct {
 	cmd  func() error
 }
 
-var cliCommand = map[string]Command{
-	"help": {
-		name: "help",
-		desc: "Prints this help screen",
-		cmd:  cmdHelp,
-	},
-	"exit": {
-		name: "exit",
-		desc: "Exits the Pokedex",
-		cmd:  cmdExit,
-	},
-	"map": {
-		name: "map",
-		desc: "Returns a page of location Data from the PokeAPI in 20 area increments",
-		cmd:  cmdMap,
-	},
-	"mapb": {
-		name: "mapb",
-		desc: "Returns prior page of location Data from the PokeAPI in 20 area increments",
-		cmd:  cmdMapb,
-	},
+var cliCommand = make(map[string]Command)
+
+func registerCommand(name, desc string, cmd func() error) {
+	cliCommand[name] = Command{name: name, desc: desc, cmd: cmd}
 }
 
 func cmdMap() error {
@@ -53,7 +36,15 @@ func cmdExit() error {
 	return nil
 }
 
+func init() {
+	registerCommand("help", "Prints this help screen", cmdHelp)
+	registerCommand("exit", "Exits the Pokedex", cmdExit)
+	registerCommand("map", "Returns a page of location Data", cmdMap)
+	registerCommand("mapb", "Returns prior page of location Data", cmdMapb)
+}
+
 func main() {
+
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Welcome to the Pokedex!")
