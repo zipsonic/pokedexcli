@@ -15,6 +15,7 @@ func cmdMapb() error {
 
 func cmdHelp() error {
 	fmt.Println(cliCommand["help"].desc)
+	//Is using the struct desc the best method here?
 	return nil
 }
 
