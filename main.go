@@ -8,7 +8,7 @@ import (
 
 var cliCommand = make(map[string]Command)
 
-func registerCommand(name, desc string, cmd func() error) {
+func registerCommand(name, desc string, cmd func(*Config) error) {
 	cliCommand[name] = Command{name: name, desc: desc, cmd: cmd}
 }
 
@@ -21,6 +21,7 @@ func init() {
 
 func main() {
 
+	config := Config{"", ""}
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Welcome to the Pokedex!")
@@ -32,7 +33,7 @@ func main() {
 
 		if cmdExec, ok := cliCommand[cmdInput]; ok {
 
-			cmdExec.cmd()
+			cmdExec.cmd(&config)
 		}
 		fmt.Print("Pokedex >")
 	}
