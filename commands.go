@@ -14,38 +14,35 @@ func cmdMap(config *Config) error {
 		return nil
 	}
 
-	returnVal := api.GetLocationArea(config.Next)
+	return wrappedCmdMap(config, config.Next)
 
-	if returnVal.NextPage == nil {
-		config.Previous = *returnVal.PreviousPage
-		config.Next = "End"
-	} else {
-		config.Previous = *returnVal.PreviousPage
-		config.Next = *returnVal.NextPage
-	}
-
-	for _, result := range returnVal.Results {
-		fmt.Println(result.Name)
-	}
-
-	return nil
 }
 
 func cmdMapb(config *Config) error {
 
-	if config.Next == "Begin" {
-		fmt.Println("At Beginning of Location Areas")
+	if config.Previous == "Start" {
+		fmt.Println("Already at Start of Location Areas")
 		return nil
 	}
 
-	returnVal := api.GetLocationArea(config.Previous)
+	return wrappedCmdMap(config, config.Previous)
 
-	if returnVal.PreviousPage == nil {
-		config.Previous = "Begin"
-		config.Next = *returnVal.NextPage
+}
+
+func wrappedCmdMap(config *Config, direction string) error {
+
+	returnVal := api.GetLocationArea(direction)
+
+	if returnVal.Previous == nil {
+		config.Previous = "Start"
 	} else {
-		config.Previous = *returnVal.PreviousPage
-		config.Next = *returnVal.NextPage
+		config.Previous = *returnVal.Previous
+	}
+
+	if returnVal.Next == nil {
+		config.Next = "End"
+	} else {
+		config.Next = *returnVal.Next
 	}
 
 	for _, result := range returnVal.Results {
@@ -53,6 +50,7 @@ func cmdMapb(config *Config) error {
 	}
 
 	return nil
+
 }
 
 func cmdHelp(config *Config) error {

@@ -25,7 +25,7 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Welcome to the Pokedex!")
-	fmt.Print("Pokedex >")
+	fmt.Print("Pokedex > ")
 
 	for scanner.Scan() {
 
@@ -35,6 +35,6 @@ func main() {
 
 			cmdExec.cmd(&config)
 		}
-		fmt.Print("Pokedex >")
+		fmt.Print("Pokedex > ")
 	}
 }
