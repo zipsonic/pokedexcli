@@ -5,7 +5,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+
+	"github.com/zipsonic/pokedexcli/pokecache"
 )
+
+var cache pokecache.Cache
 
 func GetLocationArea(url string) LocationAreaResponse {
 
@@ -13,15 +17,20 @@ func GetLocationArea(url string) LocationAreaResponse {
 		url = "https://pokeapi.co/api/v2/location-area/"
 	}
 
-	resp, err := http.Get(url)
-	if err != nil {
-		fmt.Println(resp.Status)
-	}
-	defer resp.Body.Close()
+	body, ok := cache.Get(url)
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println("Error Reading Body")
+	if !ok {
+		resp, err := http.Get(url)
+		if err != nil {
+			fmt.Println(resp.Status)
+		}
+		defer resp.Body.Close()
+
+		body, err := io.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println("Error Reading Body")
+		}
+		cache.Add(url, body)
 	}
 
 	var locationAreaResponse LocationAreaResponse

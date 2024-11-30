@@ -4,6 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"time"
+
+	"github.com/zipsonic/pokedexcli/pokecache"
 )
 
 var cliCommand = make(map[string]Command)
@@ -21,6 +24,7 @@ func init() {
 
 func main() {
 
+	pokecache.NewCache(10 * time.Second)
 	config := Config{"", ""}
 	scanner := bufio.NewScanner(os.Stdin)
 
