@@ -2,11 +2,13 @@ package pokecache
 
 import "time"
 
-var cache Cache
+func NewCache(interval time.Duration) *Cache {
 
-func NewCache(interval time.Duration) {
+	var cache Cache
+
+	cache.entries = make(map[string]cacheEntry)
 
 	go cache.reapLoop(interval)
 
-	return
+	return &cache
 }
