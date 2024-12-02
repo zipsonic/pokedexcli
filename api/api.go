@@ -16,11 +16,7 @@ func init() {
 	cache = pokecache.NewCache(time.Second * 10)
 }
 
-func GetLocationArea(url string) LocationAreaResponse {
-
-	if url == "" {
-		url = "https://pokeapi.co/api/v2/location-area/?offset=0&limit=20"
-	}
+func getPokeData(url string) []byte {
 
 	var body []byte
 	var ok bool
@@ -41,10 +37,29 @@ func GetLocationArea(url string) LocationAreaResponse {
 		cache.Add(url, body)
 	}
 
+	return body
+}
+
+func GetLocationArea(url string) LocationAreaResponse {
+
+	body := getPokeData(url)
+
 	var locationAreaResponse LocationAreaResponse
 	if err := json.Unmarshal(body, &locationAreaResponse); err != nil {
 		fmt.Println("Error Unmarshalling Data")
 	}
 
 	return locationAreaResponse
+}
+
+func GetExploreArea(url string) ExploreAreaResponse {
+
+	body := getPokeData(url)
+
+	var exploreAreaResponse ExploreAreaResponse
+	if err := json.Unmarshal(body, &exploreAreaResponse); err != nil {
+		fmt.Println("Error Unmarshalling Data")
+	}
+
+	return exploreAreaResponse
 }
