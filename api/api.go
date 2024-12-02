@@ -40,38 +40,23 @@ func getPokeData(url string) []byte {
 	return body
 }
 
-func GetLocationArea(url string) LocationAreaResponse {
-
+func fetch[T any](url string) T {
 	body := getPokeData(url)
-
-	var locationAreaResponse LocationAreaResponse
-	if err := json.Unmarshal(body, &locationAreaResponse); err != nil {
+	var result T
+	if err := json.Unmarshal(body, &result); err != nil {
 		fmt.Println("Error Unmarshalling Data")
 	}
+	return result
+}
 
-	return locationAreaResponse
+func GetLocationArea(url string) LocationAreaResponse {
+	return fetch[LocationAreaResponse](url)
 }
 
 func GetExploreArea(url string) ExploreAreaResponse {
-
-	body := getPokeData(url)
-
-	var exploreAreaResponse ExploreAreaResponse
-	if err := json.Unmarshal(body, &exploreAreaResponse); err != nil {
-		fmt.Println("Error Unmarshalling Data")
-	}
-
-	return exploreAreaResponse
+	return fetch[ExploreAreaResponse](url)
 }
 
 func GetPokemon(url string) PokemonResponse {
-
-	body := getPokeData(url)
-
-	var pokemonResponse PokemonResponse
-	if err := json.Unmarshal(body, &pokemonResponse); err != nil {
-		fmt.Println("Error Unmarshalling Data")
-	}
-
-	return pokemonResponse
+	return fetch[PokemonResponse](url)
 }

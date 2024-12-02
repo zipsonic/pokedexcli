@@ -11,22 +11,6 @@ import (
 	"github.com/zipsonic/pokedexcli/api"
 )
 
-const BaseAPIURL string = "https://pokeapi.co/api/v2/"
-const BaseLocationURL string = BaseAPIURL + "location-area/"
-const BasePokemonURL string = BaseAPIURL + "pokemon/"
-
-func isNumberInRange(s string, min, max int) bool {
-	// Convert the string to an integer
-	num, err := strconv.Atoi(s)
-	if err != nil {
-		// If parsing fails, the string is not a valid number
-		return false
-	}
-
-	// Check if the number is within the specified range
-	return num >= min && num <= max
-}
-
 func cmdMap(config *Config, cmdSlice []string) error {
 
 	if config.Next == "End" {
