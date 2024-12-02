@@ -63,3 +63,15 @@ func GetExploreArea(url string) ExploreAreaResponse {
 
 	return exploreAreaResponse
 }
+
+func GetPokemon(url string) PokemonResponse {
+
+	body := getPokeData(url)
+
+	var pokemonResponse PokemonResponse
+	if err := json.Unmarshal(body, &pokemonResponse); err != nil {
+		fmt.Println("Error Unmarshalling Data")
+	}
+
+	return pokemonResponse
+}

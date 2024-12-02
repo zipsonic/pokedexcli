@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/zipsonic/pokedexcli/api"
 	"github.com/zipsonic/pokedexcli/pokecache"
 )
 
@@ -17,17 +18,19 @@ func registerCommand(name, desc string, cmd func(*Config, []string) error) {
 }
 
 func init() {
-	registerCommand("help", "Prints this help screen", cmdHelp)
+	registerCommand("help", "\"help [command]\" will give you a description of the command\n\"help list\" will list all commands.", cmdHelp)
 	registerCommand("exit", "Exits the Pokedex", cmdExit)
 	registerCommand("map", "Returns a page of location Data", cmdMap)
 	registerCommand("mapb", "Returns prior page of location Data", cmdMapb)
 	registerCommand("explore", "Explore areas returned from map & mapb. Calls require either area name or number.", cmdExplore)
+	registerCommand("catch", "Attempt to catch Pokemon in Explored area. Must specify pokemon to catch", cmdCatch)
 }
 
 func main() {
 
-	pokecache.NewCache(10 * time.Second)
-	config := Config{"", "", nil}
+	pokecache.NewCache(20 * time.Minute)
+	caught := make(map[string]api.PokemonResponse)
+	config := Config{"", "", nil, nil, caught}
 	scanner := bufio.NewScanner(os.Stdin)
 
 	fmt.Println("Welcome to the Pokedex!")
@@ -35,9 +38,7 @@ func main() {
 
 	for scanner.Scan() {
 
-		cmdInput := scanner.Text()
-
-		cmdSlice := strings.Split(cmdInput, " ")
+		cmdSlice := strings.Split(scanner.Text(), " ")
 
 		if cmdExec, ok := cliCommand[cmdSlice[0]]; ok {
 
