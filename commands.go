@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"os"
 	"slices"
-	"strconv"
 	"time"
 
 	"github.com/zipsonic/pokedexcli/api"
@@ -77,10 +76,9 @@ func cmdExplore(config *Config, cmdSlice []string) error {
 
 	// check to see if 1st argument is a string representation of a number, then return the index from the last map command
 	// otherwise, find the area requested
-	if isNumberInRange(cmdSlice[1], 1, 20) {
-		index, _ := strconv.Atoi(cmdSlice[1])
-		index -= 1
-		area = config.Areas[index]
+	num, ok := isNumberInRange(cmdSlice[1], 1, 20)
+	if ok {
+		area = config.Areas[num-1]
 	} else {
 		area = cmdSlice[1]
 	}
