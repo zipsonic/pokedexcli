@@ -134,6 +134,7 @@ func cmdCatch(config *Config, cmdSlice []string) error {
 
 	if caughtIndex > returnVal.BaseExperience {
 		fmt.Println("CLICK!")
+		time.Sleep(500 * time.Millisecond)
 		//fmt.Printf("CI: %d BE: %d\n", caughtIndex, returnVal.BaseExperience)
 		fmt.Printf("You caught %s!!!\n", returnVal.Name)
 		config.Caught[returnVal.Name] = returnVal
@@ -141,6 +142,37 @@ func cmdCatch(config *Config, cmdSlice []string) error {
 		fmt.Printf("%s escaped!\n", returnVal.Name)
 	}
 
+	return nil
+}
+
+func cmdInspect(config *Config, cmdSlice []string) error {
+
+	// if there are no arguments list pokemon in possession
+	if len(cmdSlice) == 1 {
+		fmt.Println("Please specify a Pokemon in your posession to inspect.")
+		fmt.Println("Your Pokemon:")
+		for _, pokemon := range config.Caught {
+			fmt.Println("  - ", pokemon.Name)
+		}
+		return nil
+	}
+
+	// Return Pokemon description, if alreaady caught
+	if pokemon, ok := config.Caught[cmdSlice[1]]; ok {
+		fmt.Println("Name: ", pokemon.Name)
+		fmt.Println("Height: ", pokemon.Height)
+		fmt.Println("Weight: ", pokemon.Weight)
+		fmt.Println("Stats:")
+		for _, stat := range pokemon.Stats {
+			fmt.Printf("  -%s: %d\n", stat.Stat.Name, stat.BaseStat)
+		}
+		fmt.Println("Types:")
+		for _, poketype := range pokemon.Types {
+			fmt.Printf("  -%s\n", poketype.Type.Name)
+		}
+	} else {
+		fmt.Println("You have not caught that Pokemon.")
+	}
 	return nil
 }
 

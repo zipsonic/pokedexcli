@@ -24,6 +24,7 @@ func init() {
 	registerCommand("mapb", "Returns prior page of location Data", cmdMapb)
 	registerCommand("explore", "Explore areas returned from map & mapb. Calls require either area name or number.", cmdExplore)
 	registerCommand("catch", "Attempt to catch Pokemon in Explored area. Must specify pokemon to catch", cmdCatch)
+	registerCommand("inspect", "Returns the stats of the specified caught Pokemon", cmdInspect)
 }
 
 func main() {
